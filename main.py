@@ -10,3 +10,6 @@ if __name__ == '__main__':
     # Run the game loop
     while game.is_active():
         game.draw_board()
+        chosen_column = game.get_move()
+        game.make_move(chosen_column)
+        winner = game.check_for_winner(chosen_column) # 0 - Game is still active, 1 - X wins, 2 - O wins, 3 - Tie
