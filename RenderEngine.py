@@ -28,7 +28,7 @@ class Render:
                     color = self.RED
                     pygame.draw.circle(self.screen, color, (column * 100 + 50, row * 100 + 50), 40)
                 elif board[row][column] == 'O':
-                    color = self.BLUE
+                    color = self.YELLOW
                     pygame.draw.circle(self.screen, color, (column * 100 + 50, row * 100 + 50), 40)
                 else:
                     color = self.GREEN
@@ -67,3 +67,40 @@ class Render:
                     column = int(mouse_x / 100)
                     if column in valid_moves:
                         return column
+
+    def draw_winner(self, winner):
+        # Draw a winner screen
+        self.screen.fill(self.WHITE)
+        if winner == 'X':
+            color = self.RED
+        else:
+            color = self.YELLOW
+        text = pygame.font.SysFont('comicsans', 100).render(f'{winner} Wins!', True, color)
+        # Center the text
+        self.screen.blit(text, (self.WIDTH / 2 - text.get_width() / 2, self.HEIGHT / 2 - text.get_height() / 2))
+        pygame.display.update()
+        pygame.time.wait(3000)
+
+    def play_again(self):
+        # Draw a play again screen
+        self.screen.fill(self.WHITE)
+        text = pygame.font.SysFont('comicsans', 100).render('Play Again?', True, self.BLACK)
+        # On the left have yes and on the right have no separated by a line
+        yes = pygame.font.SysFont('comicsans', 100).render('Yes', True, self.BLACK)
+        no = pygame.font.SysFont('comicsans', 100).render('No', True, self.BLACK)
+        pygame.draw.line(self.screen, self.BLACK, (350, 300), (350, 600), 5)
+        self.screen.blit(text, (100, 100))
+        self.screen.blit(yes, (100, 300))
+        self.screen.blit(no, (400, 300))
+        pygame.display.update()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    if 100 <= mouse_x <= 250 and 300 <= mouse_y <= 400:
+                        return True
+                    elif 400 <= mouse_x <= 550 and 300 <= mouse_y <= 400:
+                        return False

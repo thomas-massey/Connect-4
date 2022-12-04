@@ -25,7 +25,7 @@ class Board:
 
     def get_move(self):
         valid_moves = self.get_possible_columns()
-        self.render.get_move(valid_moves, self.board, self.turn)
+        return self.render.get_move(valid_moves, self.board, self.turn)
 
     def make_move(self, column):
         for row in range(5, -1, -1):
@@ -68,4 +68,14 @@ class Board:
                     self.winner = self.board[row][column]
                     self.is_game_active = False
                     return self.winner
-        
+        else:
+            return None
+    
+    def draw_winner(self, winner):
+        self.render.draw_winner(winner)
+        play_again = self.render.play_again()
+        if play_again:
+            return True
+        else:
+            self.is_game_active = False
+            return False

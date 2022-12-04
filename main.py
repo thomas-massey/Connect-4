@@ -12,4 +12,10 @@ if __name__ == '__main__':
         game.draw_board()
         chosen_column = game.get_move()
         game.make_move(chosen_column)
-        winner = game.check_for_winner(chosen_column) # 0 - Game is still active, 1 - X wins, 2 - O wins, 3 - Tie
+        winner = game.check_for_winner(chosen_column)
+        if winner is not None:
+            play_again = game.draw_winner(winner)
+            if play_again:
+                game = GameEngine.Board()
+            else:
+                break
