@@ -4,6 +4,11 @@ A simple Pygame implementation of Connect 4
 ## Requirements:
 1. Pygame
 
+## Install requirements
+```bash
+pip install pygame
+```
+
 ## Demo video
 TODO: Add video
 
