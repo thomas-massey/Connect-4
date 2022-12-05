@@ -1,14 +1,24 @@
 from time import sleep
 import RenderEngine
+import AI
 
 class Board:
-    def __init__(self):
+    def __init__(self, no_render=False, board=None):
         # 0,0 is top left and it is 7 columns and 6 rows
-        self.board = [[None for _ in range(7)] for _ in range(6)]
+        if board == None:
+            self.board = [[None for _ in range(7)] for _ in range(6)]
+        else:
+            self.board = board
         self.turn = 'X'
         self.winner = None
         self.is_game_active = True
-        self.render = RenderEngine.Render()
+        if not no_render:
+            self.render = RenderEngine.Render()
+            self.is_against_AI = self.render.is_against_AI()
+            if self.is_against_AI:
+                self.player = self.render.get_player()
+                self.AI_Mode = self.render.get_AI_mode()
+        
 
     def get_possible_columns(self):
         possible_columns = []
@@ -25,7 +35,18 @@ class Board:
 
     def get_move(self):
         valid_moves = self.get_possible_columns()
-        return self.render.get_move(valid_moves, self.board, self.turn)
+        if not self.is_against_AI:
+            return self.render.get_move(valid_moves, self.board, self.turn)
+        else:
+            if self.turn == self.player:
+                return self.render.get_move(valid_moves, self.board, self.turn)
+            else:
+                if self.AI_Mode == 'Random':
+                    return AI.random_move(valid_moves)
+                elif self.AI_Mode == 'Depth3':
+                    return AI.depth_3(self.board, valid_moves, self.turn)
+                elif self.AI_Mode == 'Depth5':
+                    return AI.depth_5(self.board, valid_moves, self.turn)
 
     def make_move(self, column):
         for row in range(5, -1, -1):
@@ -36,6 +57,7 @@ class Board:
             self.turn = 'O'
         else:
             self.turn = 'X'
+        print(self.board)
 
     def check_for_winner(self, last_column):
         # Get the row and column of the last move

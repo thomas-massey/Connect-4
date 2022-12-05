@@ -81,6 +81,88 @@ class Render:
         pygame.display.update()
         pygame.time.wait(3000)
 
+    def is_against_AI(self):
+        # Draw a two player screen
+        self.screen.fill(self.WHITE)
+        text = pygame.font.SysFont('comicsans', 100).render('Play against...', True, self.BLACK)
+        # On the left have a human and on the right have an AI separated by a line
+        human = pygame.font.SysFont('comicsans', 50).render('Human', True, self.RED)
+        ai = pygame.font.SysFont('comicsans', 50).render('AI', True, self.BLUE)
+        pygame.draw.line(self.screen, self.BLACK, (350, 300), (350, 600), 5)
+        pygame.draw.line(self.screen, self.BLACK, (0, 300), (700, 300), 5)
+        self.screen.blit(text, (self.WIDTH / 2 - text.get_width() / 2, 100))
+        # Middle of lower half of screen
+        self.screen.blit(human, (85, 400))
+        self.screen.blit(ai, (500, 400))
+        pygame.display.update()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    if mouse_x < 350:
+                        return False
+                    else:
+                        return True
+
+    def get_player(self):
+        # Determine if the player is X or O
+        self.screen.fill(self.WHITE)
+        text = pygame.font.SysFont('comicsans', 100).render('Player is...', True, self.BLACK)
+        # On the left have X and on the right have O separated by a line
+        x = pygame.font.SysFont('comicsans', 100).render('X', True, self.RED)
+        o = pygame.font.SysFont('comicsans', 100).render('O', True, self.YELLOW)
+        pygame.draw.line(self.screen, self.BLACK, (350, 300), (350, 600), 5)
+        pygame.draw.line(self.screen, self.BLACK, (0, 300), (700, 300), 5)
+        self.screen.blit(text, (100, 100))
+        self.screen.blit(x, (100, 400))
+        self.screen.blit(o, (500, 400))
+        pygame.display.update()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    if mouse_x < 350:
+                        return 'X'
+                    else:
+                        return 'O'
+
+    def get_AI_mode(self):
+        # Determine if the AI is easy or hard
+        self.screen.fill(self.WHITE)
+        text = pygame.font.SysFont('comicsans', 50).render('AI Difficulty...', True, self.BLACK)
+        # On the left have easy and on the right have hard separated by a line
+        easy = pygame.font.SysFont('comicsans', 30).render('Easy', True, self.BLACK)
+        medium = pygame.font.SysFont('comicsans', 30).render('Medium', True, self.BLACK)
+        hard = pygame.font.SysFont('comicsans', 30).render('Hard', True, self.BLACK)
+        pygame.draw.line(self.screen, self.BLACK, (350, 200), (350, 600), 5)
+        pygame.draw.line(self.screen, self.BLACK, (0, 400), (700, 400), 5)
+        pygame.draw.line(self.screen, self.BLACK, (0, 200), (700, 200), 5)
+        self.screen.blit(text, (100, 100))
+        self.screen.blit(easy, (100, 300))
+        self.screen.blit(medium, (100, 450))
+        self.screen.blit(hard, (500, 450))
+
+        pygame.display.update()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    if mouse_x < 350 and mouse_y < 400:
+                        return 'Random'
+                    elif mouse_x < 350 and mouse_y > 400:
+                        return 'Depth3'
+                    else:
+                        return 'Depth5'
+
     def play_again(self):
         # Draw a play again screen
         self.screen.fill(self.WHITE)
@@ -89,6 +171,7 @@ class Render:
         yes = pygame.font.SysFont('comicsans', 100).render('Yes', True, self.BLACK)
         no = pygame.font.SysFont('comicsans', 100).render('No', True, self.BLACK)
         pygame.draw.line(self.screen, self.BLACK, (350, 300), (350, 600), 5)
+        pygame.draw.line(self.screen, self.BLACK, (0, 300), (700, 300), 5)
         self.screen.blit(text, (100, 100))
         self.screen.blit(yes, (100, 300))
         self.screen.blit(no, (400, 300))
